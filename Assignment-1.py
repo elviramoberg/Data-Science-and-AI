@@ -7,6 +7,7 @@ gdp_per_capita = pandas.read_csv('gdp-per-capita-worldbank.csv')
 life_exp = pandas.read_csv('life-expectancy.csv')
 gdp_per_capita_2020 = gdp_per_capita[(gdp_per_capita['Year'] == 2020) & (gdp_per_capita['Code']) & (gdp_per_capita['Entity'] != "World")]
 life_exp_2020 = life_exp[(life_exp['Year'] == 2020) & (life_exp['Code']) & (life_exp['Entity'] != "World")]
+
 merged = gdp_per_capita_2020.merge(life_exp_2020, on= ['Entity', 'Code', 'Year'])
 
 merged.plot.scatter(x= 'GDP per capita, PPP (constant 2017 international $)', y= 'Life expectancy at birth (historical)', c= 'red')
@@ -28,8 +29,15 @@ print(f"Countries with life expectancy higher than one standard deviation above 
 total_gdp = pandas.read_csv('gross-domestic-product.csv')
 total_gdp_2020 = total_gdp[(total_gdp['Year'] == 2020) & (total_gdp['Code']) & (total_gdp['Entity'] != "World")]
 median_gdp = np.median(total_gdp_2020['GDP (constant 2015 US$)'])
+mean_gdp = np.mean(total_gdp_2020['GDP (constant 2015 US$)'])
+print(mean_gdp)
+print(median_gdp)
 median_life_exp = np.median(life_exp_2020['Life expectancy at birth (historical)'])
-low_gdp = (total_gdp_2020[(total_gdp_2020['GDP (constant 2015 US$)'] < median_gdp)])
+mean_life_exp = np.mean(life_exp_2020['Life expectancy at birth (historical)'])
+print(median_life_exp)
+print(mean_life_exp)
+low_gdp = (total_gdp_2020[(total_gdp_2020['GDP (constant 2015 US$)'] < mean)])
+print(len(low_gdp))
 high_life_exp = (life_exp_2020[(life_exp_2020['Life expectancy at birth (historical)'] > median_life_exp)])
 merged_2 = low_gdp.merge(high_life_exp)
 low_gdp_high_life_exp_countries = list(merged_2['Entity'])
