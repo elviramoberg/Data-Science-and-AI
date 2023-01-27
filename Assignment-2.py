@@ -77,12 +77,6 @@ from sklearn import metrics
 # Loading iris data
 iris = load_iris()
 
-# Print to show there are 1797 images (8 by 8 images for a dimensionality of 64)
-print("Image data set", iris.data.shape)
-# Print to show there are 1797 labels (integers from 0-9)
-print("Label Data Shape", iris.target.shape)
-plt.figure(figsize=(9, 9))
-
 # Split the data into training and test sets
 x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.25)
 
@@ -105,14 +99,13 @@ plt.ylabel('Actual label')
 plt.xlabel('Predicted label')
 all_sample_title = 'Accuracy Score: {0}'.format(round(score, 3))
 plt.title(all_sample_title, size = 15)
-plt.savefig('Confusion_matrix_iris.png')
 plt.show()
 
 # ------------------------------------------2B-----------------------------------------------
 from sklearn.neighbors import KNeighborsClassifier
 
 # Create list of k-values, removing some to prevent ties
-k_values = [num for num in range(0, 112) if num%2!=0 and num%3!=0]
+k_values = [num for num in range(0, 112) if num % 2 != 0 and num % 3 != 0]
 
 # Create precision lists for uniform and distance weights
 dist_prec = []
@@ -160,7 +153,7 @@ for test_k in test_ks:
     cm = metrics.confusion_matrix(y_test, predictions)
 
     # Plotting confusion matrices
-    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'RdPu_r')
+    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square=True, cmap='RdPu_r')
     plt.ylabel('Actual label')
     plt.xlabel('Predicted label')
     title = 'Accuracy Score: {0}'.format(round(score,3)) + "\n k = " + str(test_k)
