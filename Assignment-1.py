@@ -18,6 +18,7 @@ plt.show()
 
 # B
 mean = np.mean(life_exp_2020['Life expectancy at birth (historical)'])
+print(mean)
 std = np.std(life_exp_2020['Life expectancy at birth (historical)'])
 mean_and_1std = mean + std
 life_exp_countries = list(life_exp_2020[life_exp_2020['Life expectancy at birth (historical)'] > mean_and_1std]['Entity'])

@@ -1,25 +1,21 @@
-import sys
+hej viktoria vgd
+proggar, du då?
+
+# ------------------------------------------1A-----------------------------------------------
 import pandas
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
-import seaborn as sns #seaborn is a package for nice-looking graphics
-from sklearn import metrics
 
 
-#1A
 hemnet_data = pandas.read_csv('data_assignment_2.csv')
-
-#  Find a linear regression model that relates the living area to the selling price.
-# If you did any data cleaning step(s), describe what you did and explain why.
-#  What are the values of the slope and intercept of the regression line?
 
 x = hemnet_data['Living_area']
 y = hemnet_data['Selling_price']
-hemnet_data.plot.scatter(x='Living_area', y='Selling_price', c= 'red')
-plt.xlabel('Living_area')
-plt.ylabel('Selling_price')
-plt.title('Living_area vs Selling_price')
+# hemnet_data.plot.scatter(x='Living_area', y='Selling_price', c= 'red')
+plt.xlabel('Living area')
+plt.ylabel('Selling price')
+plt.title('Living area vs Selling price')
 
 model = LinearRegression()
 model.fit(x[:, np.newaxis], y)
@@ -27,98 +23,134 @@ model.fit(x[:, np.newaxis], y)
 xfit = np.array([min(x), max(x)])
 yfit = model.predict(xfit[:, np.newaxis])
 
-#1B
-#LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None)
+plt.scatter(x, y, c="dodgerblue")
+plt.plot(xfit, yfit, label='Regression line', color='deeppink')
+plt.legend()
+plt.show()
 
+# ------------------------------------------1B-----------------------------------------------
 m = model.intercept_
 k = model.coef_
 print(round(m))
 print(k)
 
-#1C
-area_100 = k*100 + m
+# ------------------------------------------1C-----------------------------------------------
+area_100 = model.predict([[100]])
 print(round(area_100[0]))
-area_150 = k*150 + m
+area_150 = model.predict([[150]])
 print(round(area_150[0]))
-area_200 = k*200 + m
+area_200 = model.predict([[200]])
 print(round(area_200[0]))
 
-plt.scatter(x, y)
-plt.plot(xfit, yfit)
+
+# ------------------------------------------1D-----------------------------------------------
+# Make predictions using your linear regression model
+predictions = model.predict(x[:, np.newaxis])
+
+# Calculate the residuals
+residuals = y - predictions
+
+# Create a scatter plot of the residuals
+plt.scatter(x, residuals, c="dodgerblue")
+
+# Add a dashed line at y=0
+plt.axhline(y=0, color='deeppink')
+
+# Add labels and a title to the plot
+plt.xlabel('Living Area (m2)')
+plt.ylabel('Residuals')
+plt.title('Residual Plot')
+
+# Display the plot
 plt.show()
 
-#1D
-#Hittade detta på en sida för att beräkna residualer, man bör nog göra om det...
-regression = LinearRegression.predict()
 
+# ------------------------------------------2A-----------------------------------------------
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+import seaborn as sns  # seaborn is a package for nice-looking graphics
+from sklearn import metrics
 
-import statsmodels.api as sm
-X = sm.add_constant(x)
-reg = sm.OLS(y, X).fit()
-hemnet_data["predicted"] = reg.predict(X)
-hemnet_data["residuals"] = reg.resid
-sns.scatterplot(data=hemnet_data, x="predicted", y="residuals")
-plt.axhline(y=0)
+# Loading iris data
+iris = load_iris()
 
-#[(k*x1 + m) for x1 in x]
-#  actual - predicted
+# Print to show there are 1797 images (8 by 8 images for a dimensionality of 64)
+print("Image data set", iris.data.shape)
+# Print to show there are 1797 labels (integers from 0-9)
+print("Label Data Shape", iris.target.shape)
+plt.figure(figsize=(9, 9))
+
+# Split the data into training and test sets
+x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.25)
+logisticRegr = LogisticRegression(multi_class='ovr', solver='liblinear')
+logisticRegr.fit(x_train, y_train)
+
+# Make predictions on entire test data
+predictions = logisticRegr.predict(x_test)
+
+# Use the score method to get the accuracy of model
+score = logisticRegr.score(x_test, y_test)
+cm = metrics.confusion_matrix(y_test, predictions)
+
+sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'RdPu_r')
+plt.ylabel('Actual label')
+plt.xlabel('Predicted label')
+all_sample_title = 'Accuracy Score: {0}'.format(round(score, 3))
+plt.title(all_sample_title, size = 15)
+plt.savefig('Confusion_matrix_iris.png')
 plt.show()
 
 
+# ------------------------------------------2B-----------------------------------------------
+from sklearn.neighbors import KNeighborsClassifier
 
-#2A
-# from sklearn.datasets import load_iris
-# from sklearn.model_selection import train_test_split
-# from sklearn.linear_model import LogisticRegression
-# # Loading iris data
-# df = load_iris()
-#
-# # Print to show there are 1797 images (8 by 8 images for a dimensionality of 64)
-# print("Size of data set" , df.data.shape)
-# # Print to show there are 1797 labels (integers from 0-9)
-# print("Label Data Shape", df.target.shape)
-# plt.figure(figsize=(20,4))
-#
-# for index, (image, label) in enumerate(zip(df.data[0:5], df.target[0:5])):
-#     plt.subplot(1, 5, index + 1)
-#     plt.imshow(np.reshape(image, (8,8)), cmap=plt.cm.gray)
-#     plt.title('Training: %i\n' % label, fontsize = 20)
-#
-# x_train, x_test, y_train, y_test = train_test_split(df.data, df.target, test_size=0.25, random_state=0)
-# logisticRegr = LogisticRegression(multi_class='ovr', solver='liblinear')
-# logisticRegr.fit(x_train, y_train)
-# # Returns a NumPy Array
-# # Predict for One Observation (image)
-# logisticRegr.predict(x_test[0].reshape(1,-1))
-# # Predict for Multiple Observations (images) at Once
-# logisticRegr.predict(x_test[0:10])
-# # Make predictions on entire test data
-# predictions = logisticRegr.predict(x_test)
-# # Use the score method to get the accuracy of model
-# score = logisticRegr.score(x_test, y_test)
-# print(score)
-# cm = metrics.confusion_matrix(y_test, predictions)
-# plt.figure(figsize=(9,9))
-#
-# sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r')
-# plt.ylabel('Actual label')
-# plt.xlabel('Predicted label')
-# all_sample_title = 'Accuracy Score: {0}'.format(score)
-# plt.title(all_sample_title, size = 15)
-# plt.savefig('toy_Digits_ConfusionSeabornCodementor.png')
-#
-# plt.show()
+# Create list of k values, removing some to prevent ties
+k_values = [num for num in range(0, 112) if num%2!=0 and num%3!=0]
 
-#2B
-# To get access to a dataset
-# from sklearn import datasets
-# Import train_test_split function
-# from sklearn.model_selection import train_test_split
-# Import knearest neighbors Classifier model
-# from sklearn.neighbors import KNeighborsClassifier
-# Import scikit-learn metrics module for accuracy calculation
-# from sklearn import metrics
-# Load dataset
-# iris = datasets.load_iris()
-# print(iris.feature_names)
-# print(iris.target_names)
+# Create accuracy lists for uniform and distance weights
+dist_prec = []
+uni_prec = []
+
+for k in k_values:
+    # Create KNN classifyer model for uniform
+    knn = KNeighborsClassifier(n_neighbors=k, weights="uniform")
+    knn.fit(x_train, y_train)
+    prec_pred = knn.predict(x_test)
+    precision = metrics.accuracy_score(y_test, prec_pred)
+    uni_prec.append(precision)
+
+    # Create KNN classifyer model for distance
+    knn = KNeighborsClassifier(n_neighbors=k, weights="distance")
+    knn.fit(x_train, y_train)
+    prec_pred = knn.predict(x_test)
+    precision = metrics.accuracy_score(y_test, prec_pred)
+    dist_prec.append(precision)
+
+# Plotting the diagram
+plt.plot(k_values, dist_prec, label="Distance", c='dodgerblue')
+plt.plot(k_values, uni_prec, label="Uniform", c='deeppink')
+plt.xlabel("k-value")
+plt.ylabel("Precision rate")
+plt.title("K nearest neighbour model")
+plt.show()
+
+
+# ------------------------------------------2C-----------------------------------------------
+test_ks = [37, 79, 103]
+for test_k in test_ks:
+    knn = KNeighborsClassifier(n_neighbors=test_k, weights="uniform")
+    knn.fit(x_train, y_train)
+    prec_pred = knn.predict(x_test)
+    precision = metrics.accuracy_score(y_test, prec_pred)
+    uni_prec.append(precision)
+
+    predictions = knn.predict(x_test)
+    score = knn.score(x_test, y_test)
+    cm = metrics.confusion_matrix(y_test, predictions)
+    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'RdPu_r')
+    plt.ylabel('Actual label')
+    plt.xlabel('Predicted label')
+    title = 'Accuracy Score: {0}'.format(round(score,3)) + "\n k = " + str(test_k)
+    plt.title(title, size=15)
+    plt.show()
