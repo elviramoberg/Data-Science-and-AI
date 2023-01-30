@@ -94,7 +94,7 @@ score = logisticRegr.score(x_test, y_test)
 cm = metrics.confusion_matrix(y_test, predictions)
 
 # Plotting confusion matrix
-sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'RdPu_r')
+sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'RdPu_r', xticklabels=iris.target_names, yticklabels=iris.target_names)
 plt.ylabel('Actual label')
 plt.xlabel('Predicted label')
 all_sample_title = 'Accuracy Score: {0}'.format(round(score, 3))
@@ -153,7 +153,7 @@ for test_k in test_ks:
     cm = metrics.confusion_matrix(y_test, predictions)
 
     # Plotting confusion matrices
-    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square=True, cmap='RdPu_r')
+    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square=True, cmap='RdPu_r', xticklabels=iris.target_names, yticklabels=iris.target_names)
     plt.ylabel('Actual label')
     plt.xlabel('Predicted label')
     title = 'Accuracy Score: {0}'.format(round(score,3)) + "\n k = " + str(test_k)
