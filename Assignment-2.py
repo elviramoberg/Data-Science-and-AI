@@ -1,4 +1,4 @@
-#hej
+
 # ------------------------------------------1A-----------------------------------------------
 import pandas
 import matplotlib.pyplot as plt
@@ -105,7 +105,7 @@ plt.show()
 from sklearn.neighbors import KNeighborsClassifier
 
 # Create list of k-values, removing some to prevent ties
-k_values = [num for num in range(0, 112) if num % 2 != 0 and num % 3 != 0]
+k_values = [num for num in range(0, 112) if num%2!=0 and num%3!=0]
 
 # Create precision lists for uniform and distance weights
 dist_prec = []
@@ -153,7 +153,7 @@ for test_k in test_ks:
     cm = metrics.confusion_matrix(y_test, predictions)
 
     # Plotting confusion matrices
-    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square=True, cmap='RdPu_r')
+    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'RdPu_r')
     plt.ylabel('Actual label')
     plt.xlabel('Predicted label')
     title = 'Accuracy Score: {0}'.format(round(score,3)) + "\n k = " + str(test_k)

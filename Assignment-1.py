@@ -47,6 +47,15 @@ print(f"Countries with low GDP but high life expectancy: {low_gdp_high_life_exp_
 
 
 # D
+total_gdp = pandas.read_csv('gross-domestic-product.csv')
+total_gdp_2020 = total_gdp[(total_gdp['Year'] == 2020) & (total_gdp['Code']) & (total_gdp['Entity'] != "World")]
+life_exp = pandas.read_csv('life-expectancy.csv')
+life_exp_2020 = life_exp[(life_exp['Year'] == 2020) & (life_exp['Code']) & (life_exp['Entity'] != "World")]
+gdp_per_capita_2020 = gdp_per_capita[(gdp_per_capita['Year'] == 2020) & (gdp_per_capita['Code']) & (gdp_per_capita['Entity'] != "World")]
+
+median_gdp = np.median(total_gdp_2020['GDP (constant 2015 US$)'])
+median_life_exp = np.median(life_exp_2020['Life expectancy at birth (historical)'])
+
 high_gdp = (total_gdp_2020[(total_gdp_2020['GDP (constant 2015 US$)'] > median_gdp)])
 low_life_exp = (life_exp_2020[(life_exp_2020['Life expectancy at birth (historical)'] < median_life_exp)])
 merged_3 = high_gdp.merge(low_life_exp)
