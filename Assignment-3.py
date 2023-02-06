@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import DBSCAN
+from sklearn.cluster import KMeans
+
 
 # ------------------------------------------1A-----------------------------------------------
 protein_data = pd.read_csv("data_assignment_3.csv")
@@ -22,6 +24,21 @@ plt.xlabel("Phi")
 plt.ylabel("Psi")
 plt.show()
 
+
+# ------------------------------------------2A-----------------------------------------------
+kmeans = KMeans(n_clusters=4)
+kmeans.fit(protein_data[["phi", "psi"]].values)
+
+# predict the clusters to which each data point belongs
+clusters = kmeans.fit_predict(protein_data[["phi", "psi"]].values)
+
+# plot the data points and color them based on the predicted cluster
+plt.scatter(protein_data["phi"], protein_data["psi"], c=clusters, cmap="YlOrRd", edgecolors="black")
+plt.title("K-means clustered Phi and Psi Combinations")
+plt.xlabel("Phi")
+plt.ylabel("Psi")
+plt.show()
+
 # ------------------------------------------3A-----------------------------------------------
 
 dbscan = DBSCAN(eps=10, min_samples=6)
@@ -31,7 +48,7 @@ dbscan.fit(protein_data[["phi", "psi"]].values)
 clusters = dbscan.fit_predict(protein_data[["phi", "psi"]].values)
 
 # plot the data points and color them based on the predicted cluster
-plt.scatter(protein_data["phi"], protein_data["psi"], c=clusters, cmap="Pastel2", edgecolors="black")
+plt.scatter(protein_data["phi"], protein_data["psi"], c=clusters, cmap="Accent", edgecolors="black")
 
 plt.title("DBSCAN clustered Phi and Psi Combinations")
 plt.xlabel("Phi")
