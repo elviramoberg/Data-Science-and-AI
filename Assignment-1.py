@@ -60,6 +60,8 @@ high_gdp = (total_gdp_2020[(total_gdp_2020['GDP (constant 2015 US$)'] > median_g
 low_life_exp = (life_exp_2020[(life_exp_2020['Life expectancy at birth (historical)'] < median_life_exp)])
 merged_3 = high_gdp.merge(low_life_exp)
 high_gdp_low_life_exp_countries = list(merged_3['Entity'])
+test = high_gdp['Entity']
+print(test)
 
 print(f"Countries with high GDP but low life expectancy: {high_gdp_low_life_exp_countries}")
 
