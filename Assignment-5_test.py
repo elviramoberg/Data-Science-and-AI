@@ -17,13 +17,14 @@ def find_directions(x, y, size):
         poss_dir.append((x, y+1, 'N'))
     return poss_dir
 
+print(find_directions(1,1,(3,3)))
 
 def get_best_V(x, y, last_V, reward_matrix, gamma=1.0, p_move=0.8):
     policy = ''
     best_v = 0
     poss_dir = find_directions(x, y, reward_matrix.shape)
     for (x1, y1, dir) in poss_dir:
-        new_v = p_move * (reward_matrix[x1, y1]+gamma*last_V[x1, y1]) + (1-p_move) * (reward_matrix[x, y] + gamma*last_V[x,y])
+        new_v = p_move * (reward_matrix[y1, x1]+gamma*last_V[y1, x1]) + (1-p_move) * (reward_matrix[y, x] + gamma*last_V[y,x])
         if new_v > best_v:
             best_v = new_v
             policy = dir
@@ -39,7 +40,7 @@ def state_iteration(V_0, reward_matrix, eps=0.001, gamma=0.9):
     while True:
         for x in range(a):
             for y in range(b):
-                policy[x, y], best_v[x, y] = get_best_V(x, y, last_V, reward_matrix, gamma=gamma)
+                policy[x, y], best_v[x, y] = get_best_V(y, x, last_V, reward_matrix, gamma=gamma)
         if (np.abs(best_v-last_V) < eps).all():   # kolla om vi kan skriva nåt annat
             return policy, best_v
         last_V = best_v.copy()
@@ -48,7 +49,7 @@ def state_iteration(V_0, reward_matrix, eps=0.001, gamma=0.9):
 reward_matrix = np.array([(0, 0, 0), (0, 10, 0), (0, 0, 0)])
 V_0 = np.zeros(reward_matrix.shape)
 
-policy, best_v = state_iteration(V_0, reward_matrix, eps=0.01)
+policy, best_v = state_iteration(V_0, reward_matrix, eps=0.0001)
 print('Converging optimal value function:')
 best_v_round= best_v.round(3)
 print(best_v_round)

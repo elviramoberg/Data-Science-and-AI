@@ -56,14 +56,14 @@ plt.show()
 
 # ------------------------------------------3A-----------------------------------------------
 
-dbscan = DBSCAN(eps=10, min_samples=6)
+dbscan = DBSCAN(eps=8, min_samples=102)
 dbscan.fit(protein_data[["phi", "psi"]].values)
 
 # predict the clusters to which each data point belongs
 clusters = dbscan.fit_predict(protein_data[["phi", "psi"]].values)
 
 # plot the data points and color them based on the prediction
-plt.scatter(protein_data["phi"], protein_data["psi"], c=clusters, cmap="Accent", s=10)
+plt.scatter(protein_data["phi"], protein_data["psi"], c=clusters, cmap="Accent", s=1)
 
 plt.title("DBSCAN clustered Phi and Psi Combinations")
 plt.xlabel("Phi")
@@ -78,10 +78,10 @@ colormarkers = ["darkturquoise", "salmon", "mediumslateblue", "plum", "springgre
 # loop through the clusters
 for cluster, color in zip(np.unique(clusters), colormarkers):
     # plot each cluster with a different colors
-    plt.scatter(protein_data[clusters == cluster]["phi"], protein_data[clusters == cluster]["psi"], c=color, s=10)
+    plt.scatter(protein_data[clusters == cluster]["phi"], protein_data[clusters == cluster]["psi"], c=color, s=1)
 
 # plot the outliers with a red x
-plt.scatter(protein_data.loc[clusters == -1, "phi"], protein_data.loc[clusters == -1, "psi"], marker="x", c="red", s=40)
+plt.scatter(protein_data.loc[clusters == -1, "phi"], protein_data.loc[clusters == -1, "psi"], marker="x", c="red", s=10)
 
 plt.title("DBSCAN clustered Phi and Psi Combinations with Outliers")
 plt.xlabel("Phi")
