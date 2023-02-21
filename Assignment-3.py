@@ -26,6 +26,21 @@ plt.show()
 
 
 # ------------------------------------------2A-----------------------------------------------
+# create K-means model with different k:s and a list with sum of squared errors
+sse_list = []
+for k in range(2, 7):
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(protein_data[["phi", "psi"]].values)
+    sse_list.append(kmeans.inertia_)
+
+# plot graph for elbow method
+plt.plot(range(2, 7), sse_list)
+plt.xlabel("k-value")
+plt.ylabel("Sum of Squared Errors")
+plt.title("Elbow Method graph")
+plt.show()
+
+# create K-means model using optimal value for k
 kmeans = KMeans(n_clusters=3)
 kmeans.fit(protein_data[["phi", "psi"]].values)
 
